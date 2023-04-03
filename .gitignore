@@ -1,10 +1,5 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-.vs
+﻿.vs
 *.user
 bin
 obj
 packages
-**/wwwroot/Hoellefaescht
