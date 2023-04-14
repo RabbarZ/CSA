@@ -1,17 +1,17 @@
 ﻿using Explorer700Library;
+using TicTacToe.Service;
 
 namespace TicTacToe
 {
-  internal class Program
-  {
-    static void Main(string[] args)
+    internal class Program
     {
-      var explorer = new Explorer700();
+        static void Main(string[] args)
+        {
+            var service = new TicTacToeService(new Explorer700());
 
-      explorer.Joystick.JoystickChanged += (s, e) =>
-      {
-        Console.WriteLine("daber");
-      };
+            service.StartGame();
+
+            Console.ReadKey();
+        }
     }
-  }
 }
