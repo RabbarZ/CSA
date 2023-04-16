@@ -7,10 +7,10 @@ namespace TicTacToe.Service
 {
     public class DrawingService
     {
-        public const int NumberOfFields = 100;
+        public const int NumberOfFields = 3;
         private const int DisplayWidth = 128;
         private const int DisplayHeight = 64;
-        private const int DesiredWidth = 128; // Change this value to the desired width which the game should have
+        private const int DesiredWidth = 64; // Change this value to the desired width which the game should have
         private const int DesiredHeight = 64; // Change this value to the desired height which the game should have
         private const int PenWidth = 1;
         private const int NumberOfLines = NumberOfFields - 1;
