@@ -1,6 +1,7 @@
 ﻿using Explorer700Library;
 using TicTacToe.Enums;
 using System.Drawing;
+using TicTacToe.Model;
 
 namespace TicTacToe.Service
 {
@@ -9,23 +10,36 @@ namespace TicTacToe.Service
         private readonly DrawingService drawingService;
         private readonly BuzzerService buzzerService;
         private readonly Explorer700 explorer;
-        private readonly Shape[,] shapes;
-        private int currentPosition = 1;
-        private Shape currentPlayer = Shape.Cross;
+        private Shape[,] shapes;
+        private int currentPosition;
+        private Shape currentPlayer;
 
         public TicTacToeService(Explorer700 explorer)
         {
             this.explorer = explorer;
             this.drawingService = new DrawingService(this.explorer);
             this.buzzerService = new BuzzerService(this.explorer);
-            this.shapes = new Shape[DrawingService.NumberOfFields, DrawingService.NumberOfFields];
         }
 
         public void StartGame()
         {
+            this.currentPosition = 1;
+            this.currentPlayer = Shape.Cross;
+            this.shapes = new Shape[DrawingService.NumberOfFields, DrawingService.NumberOfFields];
             var position = this.GetCurrentPosition();
             this.drawingService.DrawCurrentState(this.shapes, position);
             this.explorer.Joystick.JoystickChanged += this.JoysticChanged;
+        }
+        
+        public void StopGame()
+        {
+            this.explorer.Joystick.JoystickChanged -= this.JoysticChanged;
+        }
+
+        private void RestartGame()
+        {
+            this.StopGame();
+            this.StartGame();
         }
 
         private void JoysticChanged(object? sender, KeyEventArgs e)
@@ -45,10 +59,14 @@ namespace TicTacToe.Service
 
                 this.shapes[position.X, position.Y] = this.currentPlayer;
                 this.drawingService.DrawCurrentState(this.shapes, this.GetCurrentPosition());
-                if (this.CheckGameStatus() != Shape.None)
+                var gameState = this.GetGameState();
+                if (gameState.Winner != Shape.None)
                 {
-                    this.drawingService.DrawWinningLine(0, 0, 2, 2);
+                    this.drawingService.DrawWinningLine(gameState.WinningStartField.X, gameState.WinningStartField.Y, gameState.WinningEndField.X, gameState.WinningEndField.Y);
                     this.buzzerService.ItsBuzzinTime();
+                    Task.Delay(TimeSpan.FromSeconds(5)).Wait();
+                    this.RestartGame();
+                    return;
                 }
 
                 this.currentPlayer = this.currentPlayer == Shape.Cross ? Shape.Ellipse : Shape.Cross;
@@ -112,33 +130,34 @@ namespace TicTacToe.Service
             return new Point(x, y);
         }
 
-        private Shape CheckGameStatus()
+        private GameState GetGameState()
         {
-            var shape = this.CheckVertical();
-            if (shape != Shape.None)
+            var gameState = this.CheckVertical();
+            if (gameState.Winner != Shape.None)
             {
-                return shape;
+                return gameState;
             }
 
-            shape = this.CheckHorizontal();
-            if (shape != Shape.None)
+            gameState = this.CheckHorizontal();
+            if (gameState.Winner != Shape.None)
             {
-                return shape;
+                return gameState;
             }
 
-            shape = this.CheckDiagonal1();
-            if (shape != Shape.None)
+            gameState = this.CheckDiagonal1();
+            if (gameState.Winner != Shape.None)
             {
-                return shape;
+                return gameState;
             }
 
-            shape = this.CheckDiagonal2();
-            return shape;
+            gameState = this.CheckDiagonal2();
+            return gameState;
         }
 
 
-        private Shape CheckVertical()
+        private GameState CheckVertical()
         {
+            var gameState = new GameState();
             for (int i = 0; i < DrawingService.NumberOfFields; i++)
             {
                 var currentShape = this.shapes[i, 0];
@@ -157,16 +176,20 @@ namespace TicTacToe.Service
 
                     if (j == DrawingService.NumberOfFields - 1)
                     {
-                        return currentShape;
+                        gameState.WinningStartField = new Point(i, 0);
+                        gameState.WinningEndField = new Point(i, j);
+                        gameState.Winner = currentShape;
+                        return gameState;
                     }
                 }
             }
 
-            return Shape.None;
+            return gameState;
         }
 
-        private Shape CheckHorizontal()
+        private GameState CheckHorizontal()
         {
+            var gameState = new GameState();
             for (int i = 0; i < DrawingService.NumberOfFields; i++)
             {
                 var currentShape = this.shapes[0, i];
@@ -185,16 +208,20 @@ namespace TicTacToe.Service
 
                     if (j == DrawingService.NumberOfFields - 1)
                     {
-                        return currentShape;
+                        gameState.WinningStartField = new Point(0, i);
+                        gameState.WinningEndField = new Point(j, i);
+                        gameState.Winner = currentShape;
+                        return gameState;
                     }
                 }
             }
 
-            return Shape.None;
+            return gameState;
         }
 
-        private Shape CheckDiagonal1()
+        private GameState CheckDiagonal1()
         {
+            var gameState = new GameState();
             var currentShape = this.shapes[0, 0];
             for (int i = 1; i < DrawingService.NumberOfFields; i++)
             {
@@ -205,15 +232,19 @@ namespace TicTacToe.Service
 
                 if (i == DrawingService.NumberOfFields - 1)
                 {
-                    return currentShape;
+                    gameState.WinningStartField = new Point(0, 0);
+                    gameState.WinningEndField = new Point(i, i);
+                    gameState.Winner = currentShape;
+                    return gameState;
                 }
             }
 
-            return Shape.None;
+            return gameState;
         }
 
-        private Shape CheckDiagonal2()
+        private GameState CheckDiagonal2()
         {
+            var gameState = new GameState();
             var currentShape = this.shapes[0, DrawingService.NumberOfFields - 1];
             for (int i = 1; i < DrawingService.NumberOfFields; i++)
             {
@@ -224,11 +255,14 @@ namespace TicTacToe.Service
 
                 if (i == DrawingService.NumberOfFields - 1)
                 {
-                    return currentShape;
+                    gameState.WinningStartField = new Point(0, DrawingService.NumberOfFields - 1);
+                    gameState.WinningEndField = new Point(i, DrawingService.NumberOfFields - 1 - i);
+                    gameState.Winner = currentShape;
+                    return gameState;
                 }
             }
 
-            return Shape.None;
+            return gameState;
         }
     }
 }
