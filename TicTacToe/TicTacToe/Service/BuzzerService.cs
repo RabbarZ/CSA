@@ -11,9 +11,9 @@ namespace TicTacToe.Service
             this.explorer = explorer;
         }
 
-        public void ItsBuzzinTime()
+        public void ItsBuzzinTime(int milliseconds)
         {
-            this.explorer.Buzzer.Beep(1000);
+            this.explorer.Buzzer.Beep(milliseconds);
         }
     }
 }

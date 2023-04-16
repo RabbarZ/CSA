@@ -10,7 +10,7 @@ namespace TicTacToe.Service
         private readonly DrawingService drawingService;
         private readonly BuzzerService buzzerService;
         private readonly Explorer700 explorer;
-        private Shape[,] shapes;
+        private Shape[,]? shapes;
         private int currentPosition;
         private Shape currentPlayer;
 
@@ -30,7 +30,7 @@ namespace TicTacToe.Service
             this.drawingService.DrawCurrentState(this.shapes, position);
             this.explorer.Joystick.JoystickChanged += this.JoysticChanged;
         }
-        
+
         public void StopGame()
         {
             this.explorer.Joystick.JoystickChanged -= this.JoysticChanged;
@@ -60,10 +60,16 @@ namespace TicTacToe.Service
                 this.shapes[position.X, position.Y] = this.currentPlayer;
                 this.drawingService.DrawCurrentState(this.shapes, this.GetCurrentPosition());
                 var gameState = this.GetGameState();
-                if (gameState.Winner != Shape.None)
+                if (gameState.Winner != Shape.None || gameState.Draw)
                 {
-                    this.drawingService.DrawWinningLine(gameState.WinningStartField.X, gameState.WinningStartField.Y, gameState.WinningEndField.X, gameState.WinningEndField.Y);
-                    this.buzzerService.ItsBuzzinTime();
+                    var beepTime = 200;
+                    if (!gameState.Draw)
+                    {
+                        this.drawingService.DrawWinningLine(gameState.WinningStartField.X, gameState.WinningStartField.Y, gameState.WinningEndField.X, gameState.WinningEndField.Y);
+                        beepTime = 1000;
+                    }
+
+                    this.buzzerService.ItsBuzzinTime(beepTime);
                     Task.Delay(TimeSpan.FromSeconds(3)).Wait();
                     this.RestartGame();
                     return;
@@ -151,9 +157,13 @@ namespace TicTacToe.Service
             }
 
             gameState = this.CheckDiagonal2();
+            if (gameState.Winner == Shape.None && this.CheckAllFieldsFilled())
+            {
+                gameState.Draw = true;
+            }
+
             return gameState;
         }
-
 
         private GameState CheckVertical()
         {
@@ -263,6 +273,22 @@ namespace TicTacToe.Service
             }
 
             return gameState;
+        }
+
+        private bool CheckAllFieldsFilled()
+        {
+            for (int i = 0; i < DrawingService.NumberOfFields; i++)
+            {
+                for (int j = 0; j < DrawingService.NumberOfFields; j++)
+                {
+                    if (this.shapes[i, j] == Shape.None)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

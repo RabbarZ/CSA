@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using TicTacToe.Enums;
 
 namespace TicTacToe.Model
@@ -11,6 +6,8 @@ namespace TicTacToe.Model
     public class GameState
     {
         public Shape Winner { get; set; }
+
+        public bool Draw { get; set; }
 
         public Point WinningStartField { get; set; }
 
