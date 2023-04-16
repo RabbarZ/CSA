@@ -64,7 +64,7 @@ namespace TicTacToe.Service
                 {
                     this.drawingService.DrawWinningLine(gameState.WinningStartField.X, gameState.WinningStartField.Y, gameState.WinningEndField.X, gameState.WinningEndField.Y);
                     this.buzzerService.ItsBuzzinTime();
-                    Task.Delay(TimeSpan.FromSeconds(5)).Wait();
+                    Task.Delay(TimeSpan.FromSeconds(3)).Wait();
                     this.RestartGame();
                     return;
                 }
