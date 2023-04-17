@@ -2,6 +2,7 @@
 using System.Drawing;
 using TicTacToe.Enums;
 using TicTacToe.Extensions;
+using TicTacToe.Model;
 
 namespace TicTacToe.Service
 {
@@ -39,7 +40,7 @@ namespace TicTacToe.Service
             this.pen = new Pen(Brushes.Red, PenWidth);
         }
 
-        public void DrawCurrentState(Shape[,] shapes, Point currentPosition)
+        public void DrawCurrentState(Shape[,] shapes, FieldCoordinate currentPosition)
         {
             this.explorer.Display.Clear();
             this.DrawInitialDisplay();

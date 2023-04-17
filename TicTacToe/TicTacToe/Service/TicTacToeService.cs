@@ -10,7 +10,7 @@ namespace TicTacToe.Service
         private readonly DrawingService drawingService;
         private readonly BuzzerService buzzerService;
         private readonly Explorer700 explorer;
-        private Shape[,]? shapes;
+        private Shape[,] shapes;
         private int currentPosition;
         private Shape currentPlayer;
 
@@ -19,7 +19,8 @@ namespace TicTacToe.Service
             this.explorer = explorer;
             this.drawingService = new DrawingService(this.explorer);
             this.buzzerService = new BuzzerService(this.explorer);
-        }
+      this.shapes = new Shape[DrawingService.NumberOfFields, DrawingService.NumberOfFields];
+    }
 
         public void StartGame()
         {
@@ -128,12 +129,12 @@ namespace TicTacToe.Service
             }
         }
 
-        private Point GetCurrentPosition()
+        private FieldCoordinate GetCurrentPosition()
         {
             var x = (this.currentPosition - 1) % DrawingService.NumberOfFields;
             var y = (int)Math.Ceiling((double)this.currentPosition / DrawingService.NumberOfFields) - 1;
 
-            return new Point(x, y);
+            return new FieldCoordinate(x, y);
         }
 
         private GameState GetGameState()
@@ -186,8 +187,8 @@ namespace TicTacToe.Service
 
                     if (j == DrawingService.NumberOfFields - 1)
                     {
-                        gameState.WinningStartField = new Point(i, 0);
-                        gameState.WinningEndField = new Point(i, j);
+                        gameState.WinningStartField = new FieldCoordinate(i, 0);
+                        gameState.WinningEndField = new FieldCoordinate(i, j);
                         gameState.Winner = currentShape;
                         return gameState;
                     }
@@ -218,8 +219,8 @@ namespace TicTacToe.Service
 
                     if (j == DrawingService.NumberOfFields - 1)
                     {
-                        gameState.WinningStartField = new Point(0, i);
-                        gameState.WinningEndField = new Point(j, i);
+                        gameState.WinningStartField = new FieldCoordinate(0, i);
+                        gameState.WinningEndField = new FieldCoordinate(j, i);
                         gameState.Winner = currentShape;
                         return gameState;
                     }
@@ -242,8 +243,8 @@ namespace TicTacToe.Service
 
                 if (i == DrawingService.NumberOfFields - 1)
                 {
-                    gameState.WinningStartField = new Point(0, 0);
-                    gameState.WinningEndField = new Point(i, i);
+                    gameState.WinningStartField = new FieldCoordinate(0, 0);
+                    gameState.WinningEndField = new FieldCoordinate(i, i);
                     gameState.Winner = currentShape;
                     return gameState;
                 }
@@ -265,8 +266,8 @@ namespace TicTacToe.Service
 
                 if (i == DrawingService.NumberOfFields - 1)
                 {
-                    gameState.WinningStartField = new Point(0, DrawingService.NumberOfFields - 1);
-                    gameState.WinningEndField = new Point(i, DrawingService.NumberOfFields - 1 - i);
+                    gameState.WinningStartField = new FieldCoordinate(0, DrawingService.NumberOfFields - 1);
+                    gameState.WinningEndField = new FieldCoordinate(i, DrawingService.NumberOfFields - 1 - i);
                     gameState.Winner = currentShape;
                     return gameState;
                 }

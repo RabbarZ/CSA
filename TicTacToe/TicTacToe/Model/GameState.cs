@@ -9,8 +9,8 @@ namespace TicTacToe.Model
 
         public bool Draw { get; set; }
 
-        public Point WinningStartField { get; set; }
+        public FieldCoordinate WinningStartField { get; set; }
 
-        public Point WinningEndField { get; set; }
+        public FieldCoordinate WinningEndField { get; set; }
     }
 }
