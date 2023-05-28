@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TicTacToe", "TicTacToe\TicT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Explorer700Library", "Explorer700Library\Explorer700Library.csproj", "{ECC81CFD-3C1E-4E3D-9457-9A463B126C70}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleHttpServer", "SimpleHttpServer\SimpleHttpServer.csproj", "{1A61772B-2156-47C2-89C4-8EDD26E85152}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{ECC81CFD-3C1E-4E3D-9457-9A463B126C70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECC81CFD-3C1E-4E3D-9457-9A463B126C70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECC81CFD-3C1E-4E3D-9457-9A463B126C70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A61772B-2156-47C2-89C4-8EDD26E85152}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A61772B-2156-47C2-89C4-8EDD26E85152}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A61772B-2156-47C2-89C4-8EDD26E85152}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A61772B-2156-47C2-89C4-8EDD26E85152}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

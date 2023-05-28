@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <NoWarn>CA1416</NoWarn>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<NoWarn>CA1416</NoWarn>
+		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="cd $(TargetDir)&#xD;&#xA;&quot;$(SolutionDir)\SecureUpload.exe&quot; . raspy:netcore/$(ProjectName)" />
-  </Target>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="cd $(TargetDir)&#xD;&#xA;&quot;$(SolutionDir)\SecureUpload.exe&quot; . raspy:netcore/$(ProjectName)" />
+	</Target>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Explorer700Library\Explorer700Library.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Explorer700Library\Explorer700Library.csproj" />
+	</ItemGroup>
 </Project>
