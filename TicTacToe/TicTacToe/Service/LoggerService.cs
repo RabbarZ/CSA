@@ -1,4 +1,6 @@
-﻿namespace TicTacToe.Service
+﻿using System.Text;
+
+namespace TicTacToe.Service
 {
     public class LoggerService
     {
@@ -15,6 +17,13 @@
 
         public void Log(string message)
         {
+            var options = new FileStreamOptions
+            {
+                Mode = FileMode.Append,
+                Access = FileAccess.Write,
+                Options = FileOptions.Asynchronous,
+                Share = FileShare.Read
+            };
             var fullname = Path.Combine(this.path, this.filename);
             StreamWriter? writer = null;
 
@@ -25,11 +34,11 @@
                     if (!File.Exists(fullname))
                     {
                         var stream = File.Create(fullname);
-                        writer = new StreamWriter(stream);
+                        writer = new StreamWriter(stream, Encoding.ASCII);
                         writer.WriteLine("// Logs from TicTacToe - Team 09");
                     }
 
-                    writer ??= new StreamWriter(fullname, true);
+                    writer ??= new StreamWriter(fullname, Encoding.ASCII, options);
 
                     writer.WriteLine($"{this.Name}: {message}: {DateTime.Now}");
                     writer.Close();

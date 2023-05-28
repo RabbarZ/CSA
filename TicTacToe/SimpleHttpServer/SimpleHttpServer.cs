@@ -10,9 +10,8 @@ namespace SimpleHttpServer {
         public static string fileName;
 
         public static void Main() {
-            string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-            SimpleHttpServer.fileName = projectDirectory + "/daten.txt";
-            Console.WriteLine("Content: {0}", projectDirectory);
+            SimpleHttpServer.fileName = Path.GetTempPath() + "TicTacToe.log";
+            Console.WriteLine(fileName);
             try
             {
                 TcpListener listener = new TcpListener(8080);
