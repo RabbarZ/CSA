@@ -1,6 +1,5 @@
 ﻿using Explorer700Library;
 using TicTacToe.Enums;
-using System.Drawing;
 using TicTacToe.Model;
 
 namespace TicTacToe.Service
@@ -9,6 +8,7 @@ namespace TicTacToe.Service
     {
         private readonly DrawingService drawingService;
         private readonly BuzzerService buzzerService;
+        private readonly LoggerService joystickLoggerService;
         private readonly Explorer700 explorer;
         private Shape[,] shapes;
         private int currentPosition;
@@ -19,8 +19,9 @@ namespace TicTacToe.Service
             this.explorer = explorer;
             this.drawingService = new DrawingService(this.explorer);
             this.buzzerService = new BuzzerService(this.explorer);
-      this.shapes = new Shape[DrawingService.NumberOfFields, DrawingService.NumberOfFields];
-    }
+            this.joystickLoggerService = new LoggerService("Joystick");
+            this.shapes = new Shape[DrawingService.NumberOfFields, DrawingService.NumberOfFields];
+        }
 
         public void StartGame()
         {
@@ -49,6 +50,8 @@ namespace TicTacToe.Service
             {
                 return;
             }
+
+            this.joystickLoggerService.Log(e.Keys.ToString());
 
             if (e.Keys == Keys.Center)
             {
